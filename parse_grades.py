@@ -17,5 +17,6 @@ def parse_grades(html):
                     'percentage': columns[6].get_text(strip=True),
                 }
                 grades.append(assignment_info)
+    print("[LOG] Grades parsed")
     return(grades)
 
