@@ -3,8 +3,8 @@ import json
 import difflib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from parse_grades import parse_grades
 from dotenv import load_dotenv
 import contiguity
@@ -13,13 +13,13 @@ import contiguity
 load_dotenv()
 
 def fetch_grades(username, password):
-    firefox_path = os.path.expanduser('/usr/bin/firefox')
-    geckodriver_path = os.path.expanduser('./geckodriver')
-    options = FirefoxOptions()
-    options.binary_location = firefox_path
+    chrome_path = os.path.expanduser('/usr/bin/chromium')
+    chromedriver_path = os.path.expanduser('./chromedriver')
+    options = ChromeOptions()
+    options.binary_location = chrome_path
     options.add_argument("--headless")
-    service = Service(geckodriver_path)
-    driver = webdriver.Firefox(service=service, options=options)
+    service = Service(chromedriver_path)
+    driver = webdriver.Chrome(service=service, options=options)
     try:
         driver.get('https://homeaccess.katyisd.org/HomeAccess/Account/LogOn?ReturnUrl=%2fHomeAccess%2f')
         driver.find_element(By.ID, 'LogOnDetails_UserName').send_keys(username)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     for change in changes:
         changelog +=  (change + "\n")
     print(changelog)
-    if(len(changelog)!=0):
+    if(len(changelog) != 0):
         try:
             phone.send.text(os.getenv('PHONE_NUMBER'), changelog)
         except:
